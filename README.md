@@ -1,28 +1,48 @@
-# 🤖 API Integradora de Inteligencia Artificial con Spring Boot y MongoDB
+# Servicios Cognitivos - Integración de Gemini y Hugging Face con Spring Boot
 
-Este proyecto es una API REST construida con **Spring Boot (Reactivo)** que actúa como intermediario para consumir servicios de Inteligencia Artificial de terceros (**Google Gemini** y **Hugging Face**). Además, implementa persistencia de datos almacenando el historial de consultas y respuestas en una base de datos en la nube usando **MongoDB Atlas**.
+Servicios Cognitivos integrando las APIs de **Google Gemini** y **Hugging Face**. El primer modelo (Gemini) recibe instrucciones de texto (prompts) y genera contenido conversacional de alta calidad. El segundo modelo (DistilBERT de Hugging Face) analiza el texto en inglés y determina automáticamente el sentimiento de la frase (Positivo o Negativo). Mediante programación reactiva con WebClient, nuestra API procesa estas consultas, devuelve los resultados al cliente y almacena automáticamente el historial de cada petición en una base de datos NoSQL en la nube.
 
-## 🚀 Características Principales
+### 1. Servicios Cognitivos
+* **Google AI Studio** - Modelo Gemini 2.5 Flash (Generación de Contenido)
+* **Hugging Face API** - Modelo DistilBERT (Análisis de Sentimientos)
 
-* **Integración con Google Gemini:** Permite enviar *prompts* al modelo `gemini-2.5-flash` para generar respuestas de texto natural.
-* **Análisis de Sentimientos (NLP):** Integración con Hugging Face usando el modelo `distilbert-base-uncased-finetuned-sst-2-english` para analizar si un texto tiene una connotación positiva o negativa.
-* **Programación Reactiva:** Uso de `WebClient` de Spring WebFlux para realizar peticiones HTTP asíncronas y eficientes a las APIs externas.
-* **Persistencia en la Nube:** Cada interacción (API usada, prompt, respuesta y fecha de creación) se guarda automáticamente en una colección de **MongoDB Atlas**.
+### 2. Spring Boot
+* **Java:** JDK 17
+* **IDE:** Visual Studio Code
+* **Gestor:** Apache Maven
+* **Framework:** Spring Boot
 
-## 🛠️ Tecnologías Utilizadas
+### 3. Dependencias de Maven:
+* Spring Boot Starter WebFlux
+* Spring Boot Starter Data MongoDB Reactive
+* Lombok
+* Reactor Test
 
-* **Java 17**
-* **Spring Boot 4.0.5**
-* **Spring WebFlux** (para peticiones reactivas con WebClient)
-* **Spring Data MongoDB Reactive** (para la conexión asíncrona a la base de datos)
-* **MongoDB Atlas** (Base de datos NoSQL en la nube)
-* **Maven** (Gestor de dependencias)
+---
 
-## ⚙️ Configuración y Ejecución
+### Dependencias Spring WebFlux + MongoDB (NoSQL)
 
-Para correr este proyecto localmente, necesitas tener Java 17 instalado.
+**Spring WebFlux | Datos MongoDB reactivos | Proyecto Reactor | Lombok**
 
-### 1. Clonar el repositorio
-```bash
-git clone [https://github.com/TuUsuario/api-ia-mongodb.git](https://github.com/TuUsuario/api-ia-mongodb.git)
-cd api-ia-mongodb
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webflux</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <optional>true</optional>
+</dependency>
+
+<dependency>
+    <groupId>io.projectreactor</groupId>
+    <artifactId>reactor-test</artifactId>
+    <scope>test</scope>
+</dependency>
