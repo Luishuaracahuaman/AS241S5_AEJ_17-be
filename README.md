@@ -47,3 +47,7 @@ Servicios Cognitivos integrando las APIs de **Google Gemini** y **Hugging Face**
     <artifactId>reactor-test</artifactId>
     <scope>test</scope>
 </dependency>
+
+
+Configuración de la Base de Datos y APIs (application.yml)
+Para ejecutar este proyecto, es necesario configurar el archivo application.yml con la cadena de conexión de MongoDB Atlas y los tokens de acceso de las respectivas IAs:
