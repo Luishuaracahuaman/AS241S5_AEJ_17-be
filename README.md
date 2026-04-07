@@ -26,6 +26,7 @@ Servicios Cognitivos integrando las APIs de **Google Gemini** y **Hugging Face**
 **Spring WebFlux | Datos MongoDB reactivos | Proyecto Reactor | Lombok**
 
 ```xml
+
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-webflux</artifactId>
@@ -48,6 +49,22 @@ Servicios Cognitivos integrando las APIs de **Google Gemini** y **Hugging Face**
     <scope>test</scope>
 </dependency>
 
+```
 
 Configuración de la Base de Datos y APIs (application.yml)
 Para ejecutar este proyecto, es necesario configurar el archivo application.yml con la cadena de conexión de MongoDB Atlas y los tokens de acceso de las respectivas IAs:
+
+```
+spring:
+  mongodb:
+    uri: "mongodb+srv://<usuario>:<password>@cluster0.xxxxx.mongodb.net/tarea_ia?retryWrites=true&w=majority"
+
+api:
+  gemini:
+    key: "TU_API_KEY_DE_GEMINI"
+    url: "[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent)"
+    
+  huggingface:
+    key: "TU_API_KEY_DE_HUGGING_FACE"
+    url: "[https://router.huggingface.co/hf-inference/models/distilbert/distilbert-base-uncased-finetuned-sst-2-english](https://router.huggingface.co/hf-inference/models/distilbert/distilbert-base-uncased-finetuned-sst-2-english)"
+```
