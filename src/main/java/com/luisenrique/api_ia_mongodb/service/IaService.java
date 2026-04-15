@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@SuppressWarnings("unchecked") // Evita las advertencias amarillas de Java
 public class IaService {
 
     private final WebClient webClient;
@@ -27,8 +29,6 @@ public class IaService {
     @Value("${api.huggingface.url}")
     private String huggingFaceUrl;
 
-    // ¡AQUÍ ESTÁ EL CAMBIO!
-    // Ya no pedimos el WebClient.Builder a Spring, lo construimos nosotros mismos.
     public IaService(IaResponseRepository repository) {
         this.webClient = WebClient.builder().build();
         this.repository = repository;
@@ -40,15 +40,28 @@ public class IaService {
                         Map.of("parts", List.of(Map.of("text", prompt)))));
 
         return webClient.post()
-                .uri(geminiUrl + "?key=" + geminiKey)
+                .uri(URI.create(geminiUrl))
+                .header("x-goog-api-key", geminiKey)
                 .bodyValue(requestBody)
                 .retrieve()
-                .bodyToMono(String.class)
-                .flatMap(response -> {
+                .bodyToMono(Map.class) // Usamos Map de Java nativo
+                .flatMap(responseMap -> {
+
+                    String textoLimpio = "";
+                    try {
+                        List<Map<String, Object>> candidates = (List<Map<String, Object>>) responseMap
+                                .get("candidates");
+                        Map<String, Object> content = (Map<String, Object>) candidates.get(0).get("content");
+                        List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
+                        textoLimpio = (String) parts.get(0).get("text");
+                    } catch (Exception e) {
+                        textoLimpio = "Error procesando el texto, pero la conexión fue exitosa.";
+                    }
+
                     IaResponse savedResponse = IaResponse.builder()
                             .apiUsed("GEMINI")
                             .promptText(prompt)
-                            .responseText(response)
+                            .responseText(textoLimpio)
                             .createdAt(LocalDateTime.now())
                             .build();
                     return repository.save(savedResponse);
@@ -63,12 +76,23 @@ public class IaService {
                 .header("Authorization", "Bearer " + huggingFaceKey)
                 .bodyValue(requestBody)
                 .retrieve()
-                .bodyToMono(String.class)
-                .flatMap(response -> {
+                .bodyToMono(List.class) // Usamos List porque Hugging Face devuelve un arreglo [...]
+                .flatMap(responseList -> {
+
+                    String sentimientoLimpio = "";
+                    try {
+                        // Navegamos por la lista para sacar solo la etiqueta (POSITIVE o NEGATIVE)
+                        List<Map<String, Object>> resultados = (List<Map<String, Object>>) responseList.get(0);
+                        Map<String, Object> mejorResultado = resultados.get(0);
+                        sentimientoLimpio = (String) mejorResultado.get("label");
+                    } catch (Exception e) {
+                        sentimientoLimpio = "Error al limpiar JSON. Conexión exitosa.";
+                    }
+
                     IaResponse savedResponse = IaResponse.builder()
                             .apiUsed("HUGGINGFACE")
                             .promptText(text)
-                            .responseText(response)
+                            .responseText(sentimientoLimpio) // Guardamos solo "POSITIVE" o "NEGATIVE"
                             .createdAt(LocalDateTime.now())
                             .build();
                     return repository.save(savedResponse);

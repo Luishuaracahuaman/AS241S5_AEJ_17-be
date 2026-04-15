@@ -1,12 +1,12 @@
 spring:
   mongodb:
-    uri: "mongodb+srv://luis:TU_CONTRASEÑA_AQUI@cluster0.ymbrk7s.mongodb.net/tarea_ia?retryWrites=true&w=majority"
+    uri: "mongodb+srv://luis:jwSmmhBfvyymHv5K@cluster0.ymbrk7s.mongodb.net/tarea_ia?retryWrites=true&w=majority"
 
 api:
   gemini:
-    key: "TU_API_KEY_DE_GEMINI"
-    url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    key: "AIzaSyA-_pHNpbP9dLVnek5Yg2m7X_bxDRYf-rU"
+    url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent"
     
   huggingface:
-    key: "TU_API_KEY_DE_HUGGING_FACE"
+    key: "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"
     url: "https://router.huggingface.co/hf-inference/models/distilbert/distilbert-base-uncased-finetuned-sst-2-english"
