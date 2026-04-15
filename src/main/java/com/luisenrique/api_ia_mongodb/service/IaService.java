@@ -76,12 +76,12 @@ public class IaService {
                 .header("Authorization", "Bearer " + huggingFaceKey)
                 .bodyValue(requestBody)
                 .retrieve()
-                .bodyToMono(List.class) // Usamos List porque Hugging Face devuelve un arreglo [...]
+                .bodyToMono(List.class)
                 .flatMap(responseList -> {
 
                     String sentimientoLimpio = "";
                     try {
-                        // Navegamos por la lista para sacar solo la etiqueta (POSITIVE o NEGATIVE)
+
                         List<Map<String, Object>> resultados = (List<Map<String, Object>>) responseList.get(0);
                         Map<String, Object> mejorResultado = resultados.get(0);
                         sentimientoLimpio = (String) mejorResultado.get("label");
@@ -92,7 +92,7 @@ public class IaService {
                     IaResponse savedResponse = IaResponse.builder()
                             .apiUsed("HUGGINGFACE")
                             .promptText(text)
-                            .responseText(sentimientoLimpio) // Guardamos solo "POSITIVE" o "NEGATIVE"
+                            .responseText(sentimientoLimpio)
                             .createdAt(LocalDateTime.now())
                             .build();
                     return repository.save(savedResponse);
