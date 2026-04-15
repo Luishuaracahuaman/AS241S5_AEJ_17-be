@@ -18,8 +18,8 @@ public class IaResponse {
 
     @Id
     private String id;
-    private String apiUsed; // Ejemplo: "GEMINI" o "HUGGINGFACE"
-    private String promptText; // Lo que le enviamos a la IA
-    private String responseText; // Lo que respondió la IA
+    private String apiUsed;
+    private String promptText;
+    private String responseText;
     private LocalDateTime createdAt;
 }
