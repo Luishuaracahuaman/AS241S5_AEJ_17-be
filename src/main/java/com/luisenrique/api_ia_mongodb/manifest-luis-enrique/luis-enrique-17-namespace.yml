@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ia-secrets-17
+  namespace: ia-project-ns-17
+type: Opaque
+stringData:
+  MONGO_URI: "mongodb+srv://luis:TU_PASSWORD@cluster0.ymbrk7s.mongodb.net/TU_BD"
+  GEMINI_KEY: "tu_clave_de_gemini_aqui"
+  HUGGINGFACE_KEY: "tu_clave_de_huggingface_aqui"

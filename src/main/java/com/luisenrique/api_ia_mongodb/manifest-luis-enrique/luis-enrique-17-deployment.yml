@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-ia-deployment-17
+  namespace: ia-project-ns-17
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-ia-spring
+  template:
+    metadata:
+      labels:
+        app: api-ia-spring
+    spec:
+      containers:
+        - name: spring-webflux-container
+          image: luishuaraca/api-ia-mongodb:latest 
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: ia-secrets-17
+                  key: MONGO_URI
+            - name: API_GEMINI_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ia-secrets-17
+                  key: GEMINI_KEY
+            - name: API_HUGGINGFACE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ia-secrets-17
+                  key: HUGGINGFACE_KEY
