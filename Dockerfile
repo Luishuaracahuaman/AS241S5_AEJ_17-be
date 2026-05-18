@@ -1,17 +1,20 @@
-# ETAPA 1: Construir el proyecto
+# Etapa 1: Construcción
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY pom.xml .
+RUN mvn dependency:go-offline -B
 COPY src ./src
-# Compila el proyecto ignorando los tests para que sea más rápido
 RUN mvn clean package -DskipTests
 
-# ETAPA 2: Empaquetar para producción (Caja ligera)
-FROM eclipse-temurin:17-jre
+# Etapa 2: Producción
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-# Copia el archivo .jar compilado de la etapa 1
 COPY --from=build /app/target/*.jar app.jar
-# Expone el puerto 8080
+
+# Variables de entorno vacías por defecto (Seguridad para que no use el application.yml directamente)
+ENV SPRING_DATA_MONGODB_URI=""
+ENV API_GEMINI_KEY=""
+ENV API_HUGGINGFACE_KEY=""
+
 EXPOSE 8080
-# Comando para encender Spring Boot
 ENTRYPOINT ["java", "-jar", "app.jar"]
