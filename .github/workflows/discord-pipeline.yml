@@ -23,6 +23,6 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
           -d '{
-            "content": "🚀 **¡Nuevo Despliegue en el Pipeline!**\nSe ha detectado un cambio en la rama `develop`.\n**Repositorio:** `'${{ github.repository }}'`\n**Usuario:** `'${{ github.actor }}'`\n**Estado:** ✅ Pipeline integrado con éxito."
+            "content": "🚀 **¡Nuevo Despliegue en el Pipeline!**\nSe ha detectado un cambio en la rama `develop`.\n**Repositorio:** `'${{ github.repository }}'`\n**Usuario:** `'${{ github.actor }}'`\n**Archivos Modificados:** `${{ join(github.event.head_commit.modified, ', ') }}`\n**Ver Cambios:** ${{ github.event.head_commit.url }}\n**Estado:** ✅ Pipeline integrado con éxito."
           }' \
           $DISCORD_WEBHOOK
