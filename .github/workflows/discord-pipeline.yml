@@ -17,18 +17,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Enviar mensaje enriquecido a Discord
+      - name: Enviar mensaje ultra enriquecido a Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
           curl -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "🚀 Integración de Pipeline Exitosa",
-              "description": "Se ha detectado y procesado un nuevo cambio en el código fuente.",
+              "title": "🚀 Ejecución de Pipeline Completada",
+              "description": "El flujo de CI/CD **${{ github.workflow }}** se ha integrado correctamente.",
               "color": 5763719,
               "author": {
-                "name": "Usuario: ${{ github.actor }}",
+                "name": "Autor del cambio: ${{ github.actor }}",
                 "icon_url": "https://github.com/${{ github.actor }}.png",
                 "url": "https://github.com/${{ github.actor }}"
               },
@@ -39,18 +39,23 @@ jobs:
                   "inline": true
                 },
                 {
-                  "name": "🌿 Rama",
-                  "value": "`${{ github.ref_name }}`",
+                  "name": "🌿 Rama / Evento",
+                  "value": "`${{ github.ref_name }}` (Evento: `${{ github.event_name }}`)",
                   "inline": true
                 },
                 {
-                  "name": "🔍 Detalles del Código",
-                  "value": "[Haga clic aquí para ver los archivos modificados](https://github.com/${{ github.repository }}/commit/${{ github.sha }})",
+                  "name": "🔍 1. Revisar Código Modificado",
+                  "value": "[💻 Clic aquí para ver el Commit exacto](https://github.com/${{ github.repository }}/commit/${{ github.sha }})",
+                  "inline": false
+                },
+                {
+                  "name": "⚙️ 2. Revisar Logs del Servidor",
+                  "value": "[▶️ Clic aquí para ver consola de GitHub Actions](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})",
                   "inline": false
                 }
               ],
               "footer": {
-                "text": "IESTP Valle Grande - APIs IA",
+                "text": "IESTP Valle Grande - APIs IA | Proyecto Final",
                 "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
               }
             }]
