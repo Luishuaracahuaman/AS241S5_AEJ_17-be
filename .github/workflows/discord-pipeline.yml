@@ -1,0 +1,28 @@
+name: Pipeline - Notificaciones Discord
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  discord-alert:
+    name: Enviar Alerta a Discord
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Enviar mensaje de éxito a Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d '{
+            "content": "🚀 **¡Nuevo Despliegue en el Pipeline!**\nSe ha detectado un cambio en la rama `develop`.\n**Repositorio:** `'${{ github.repository }}'`\n**Usuario:** `'${{ github.actor }}'`\n**Estado:** ✅ Pipeline integrado con éxito."
+          }' \
+          $DISCORD_WEBHOOK
