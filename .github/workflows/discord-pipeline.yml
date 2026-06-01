@@ -17,12 +17,42 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Enviar mensaje de éxito a Discord
+      - name: Enviar mensaje enriquecido a Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
           curl -H "Content-Type: application/json" \
           -d '{
-            "content": "🚀 **¡Nuevo Despliegue en el Pipeline!**\nSe ha detectado un cambio en la rama `develop`.\n**Repositorio:** `'${{ github.repository }}'`\n**Usuario:** `'${{ github.actor }}'`\n**Archivos Modificados:** `${{ join(github.event.head_commit.modified, ', ') }}`\n**Ver Cambios:** ${{ github.event.head_commit.url }}\n**Estado:** ✅ Pipeline integrado con éxito."
+            "embeds": [{
+              "title": "🚀 Integración de Pipeline Exitosa",
+              "description": "Se ha detectado y procesado un nuevo cambio en el código fuente.",
+              "color": 5763719,
+              "author": {
+                "name": "Usuario: ${{ github.actor }}",
+                "icon_url": "https://github.com/${{ github.actor }}.png",
+                "url": "https://github.com/${{ github.actor }}"
+              },
+              "fields": [
+                {
+                  "name": "📦 Repositorio",
+                  "value": "[${{ github.event.repository.name }}](https://github.com/${{ github.repository }})",
+                  "inline": true
+                },
+                {
+                  "name": "🌿 Rama",
+                  "value": "`${{ github.ref_name }}`",
+                  "inline": true
+                },
+                {
+                  "name": "🔍 Detalles del Código",
+                  "value": "[Haga clic aquí para ver los archivos modificados](https://github.com/${{ github.repository }}/commit/${{ github.sha }})",
+                  "inline": false
+                }
+              ],
+              "footer": {
+                "text": "IESTP Valle Grande - APIs IA",
+                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              }
+            }]
           }' \
           $DISCORD_WEBHOOK
