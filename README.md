@@ -1,6 +1,7 @@
 # 🤖 Servicios Cognitivos - Integración de Gemini y Hugging Face con Spring Boot
 
 Servicios Cognitivos integrando las APIs de **Google Gemini** y **Hugging Face**. El primer modelo (Gemini) recibe instrucciones de texto (prompts) y genera contenido conversacional de alta calidad. El segundo modelo (DistilBERT de Hugging Face) analiza el texto en inglés y determina automáticamente el sentimiento de la frase (Positivo o Negativo). Mediante programación reactiva con WebClient, nuestra API procesa estas consultas, devuelve los resultados al cliente y almacena automáticamente el historial de cada petición en una base de datos NoSQL en la nube..
+prueba 1
 
 ### 1. Servicios Cognitivos
 * <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" width="18"/> **Google AI Studio** - Modelo Gemini 2.5 Flash (Generación de Contenido)
